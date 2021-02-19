@@ -26,10 +26,7 @@ const todoSchema = new Schema({
     type: String,
     required: true,
   },
-  isCompleted: {
-    type: Boolean,
-    required: true,
-  },
+  isCompleted: Boolean,
   student: {
     type: String,
     required: true,
@@ -64,7 +61,7 @@ app.get("/api/todos", async (_, res) => {
 });
 
 app.post("/api/todo", async (req, res) => {
-  const newTodo = new Todo(req.body);
+  const newTodo = new Todo({ ...req.body, isCompleted: false });
 
   try {
     const doc = await newTodo.save();
