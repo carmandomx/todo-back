@@ -60,52 +60,64 @@ app.get("/api/todos", async (_, res) => {
   });
 });
 
-app.post("/api/todo", async (req, res) => {
-  const newTodo = new Todo({ ...req.body, isCompleted: false });
+try {
+  app.post("/api/todo", async (req, res) => {
+    const newTodo = new Todo({ ...req.body, isCompleted: false });
 
-  try {
-    const doc = await newTodo.save();
-    res.status(201).json(doc);
-  } catch (err) {
-    let errors = Object.values(err.errors).map((el) => el.message);
-    let fields = Object.values(err.errors).map((el) => el.path);
+    try {
+      const doc = await newTodo.save();
+      res.status(201).json(doc);
+    } catch (err) {
+      let errors = Object.values(err.errors).map((el) => el.message);
+      let fields = Object.values(err.errors).map((el) => el.path);
 
-    res.status(400).send({
-      messages: errors,
-      fields,
-    });
-  }
-});
+      res.status(400).send({
+        messages: errors,
+        fields,
+      });
+    }
+  });
+} catch (error) {
+  console.log(error);
+}
 
-app.put("/api/todo/:id", async (req, res) => {
-  const id = req.params.id;
-  try {
-    const doc = await Todo.findByIdAndUpdate(id, req.body, { new: true });
-    res.status(200).json(doc);
-  } catch (err) {
-    let errors = Object.values(err.errors).map((el) => el.message);
-    let fields = Object.values(err.errors).map((el) => el.path);
+try {
+  app.put("/api/todo/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+      const doc = await Todo.findByIdAndUpdate(id, req.body, { new: true });
+      res.status(200).json(doc);
+    } catch (err) {
+      let errors = Object.values(err.errors).map((el) => el.message);
+      let fields = Object.values(err.errors).map((el) => el.path);
 
-    res.status(400).send({
-      messages: errors,
-      fields,
-    });
-  }
-});
+      res.status(400).send({
+        messages: errors,
+        fields,
+      });
+    }
+  });
+} catch (error) {
+  console.log(error);
+}
 
-app.delete("/api/todo/:id", async (req, res) => {
-  const id = req.params.id;
+try {
+  app.delete("/api/todo/:id", async (req, res) => {
+    const id = req.params.id;
 
-  try {
-    await Todo.findByIdAndDelete(id);
-    res.sendStatus(204);
-  } catch (err) {
-    let errors = Object.values(err.errors).map((el) => el.message);
-    let fields = Object.values(err.errors).map((el) => el.path);
+    try {
+      await Todo.findByIdAndDelete(id);
+      res.sendStatus(204);
+    } catch (err) {
+      let errors = Object.values(err.errors).map((el) => el.message);
+      let fields = Object.values(err.errors).map((el) => el.path);
 
-    res.status(400).send({
-      messages: errors,
-      fields,
-    });
-  }
-});
+      res.status(400).send({
+        messages: errors,
+        fields,
+      });
+    }
+  });
+} catch (error) {
+  console.log(error);
+}
